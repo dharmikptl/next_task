@@ -1,0 +1,107 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model theater {
+  id              Int    @id @default(autoincrement())
+  contact         String
+  seatingCapacity Int
+  location        String
+  name            String
+
+  seat seats[]
+  show showtime[]
+}
+
+model movies {
+  id          Int             @id @default(autoincrement())
+  imgSRc      String
+  duration    DateTime        @db.Date
+  realesedate DateTime        @db.Date
+  director    String
+  describtion String
+  title       String
+  show        showtime[]
+  ratingmovie reviewsRating[]
+}
+
+model showtime {
+  id           Int       @id @default(autoincrement())
+  movieID      Int
+  theaterID    Int
+  date         DateTime  @db.Date
+  availibility Int
+  bookshow     booking[]
+  movie        movies    @relation(fields: [movieID], references: [id])
+  theater      theater   @relation(fields: [theaterID], references: [id])
+}
+
+model discount {
+  id             Int      @id @default(autoincrement())
+  couponcode     String
+  discountAmount Int
+  expirationDate DateTime @db.Date
+  limit_usage    DateTime @db.Date
+}
+
+model payment {
+  id            Int      @id @default(autoincrement())
+  bookingID     Int
+  paymentDtae   DateTime @db.Date
+  amount        Int
+  paymentstatus Int
+  paymentMethod String
+
+  bookingpay booking @relation(fields: [bookingID], references: [id])
+}
+
+model reviewsRating {
+  id      Int      @id @default(autoincrement())
+  userID  Int
+  movieId Int
+  review  String
+  rating  Int
+  date    DateTime @db.Date
+
+  user        users  @relation(fields: [userID], references: [id])
+  moviereview movies @relation(fields: [movieId], references: [id])
+}
+
+model booking {
+  id             Int       @id @default(autoincrement())
+  userID         Int
+  showtimeID     Int
+  number_tickets Int
+  total_cost     Int
+  userbook       users     @relation(fields: [userID], references: [id])
+  boshow         showtime  @relation(fields: [showtimeID], references: [id])
+  payment        payment[]
+}
+
+model users {
+  id       Int    @id @default(autoincrement())
+  username String
+  email    String
+  password String
+  contact  String
+
+  rating      reviewsRating[]
+  bookinguser booking[]
+}
+
+model seats {
+  id         Int     @id @default(autoincrement())
+  row        Int
+  column     Int
+  its_status Boolean
+  theaterID  Int
+  theater    theater @relation(fields: [theaterID], references: [id])
+}

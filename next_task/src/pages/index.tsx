@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      <table className="table-auto border-collapse border-4 text-center w-100">
+      <table className="table-auto border-collapse border-4 text-center w-full">
         <thead>
           <tr className="border-collapse border-4">
             <th>Booking ID</th>
@@ -22,10 +22,26 @@ export default function Home() {
         </thead>
         <tbody>
           <tr>
-            <td>{userData.map(data=>(<div>{data?.id}</div>))}</td>
-            <td>{userData.map(data=>(<div>{data?.boshow?.movie?.title}</div>))}</td>
-            <td>{userData.map(data=>(<div>{data?.userbook?.username}</div>))}</td>
-            <td>{userData.map(data=>(<div>{data?.number_tickets}</div>))}</td>
+            <td>
+              {userData.map((data) => (
+                <div>{data?.id}</div>
+              ))}
+            </td>
+            <td>
+              {userData.map((data) => (
+                <div>{data?.boshow?.movie?.title}</div>
+              ))}
+            </td>
+            <td>
+              {userData.map((data) => (
+                <div>{data?.userbook?.username}</div>
+              ))}
+            </td>
+            <td>
+              {userData.map((data) => (
+                <div>{data?.number_tickets}</div>
+              ))}
+            </td>
           </tr>
         </tbody>
       </table>
